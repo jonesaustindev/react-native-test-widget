@@ -51,7 +51,8 @@ struct Provider: IntentTimelineProvider {
   }
   
   func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-    let fooDefault = UserDefaults(suiteName: "group.org.reactjs.native.example.RNWidgetTest")?.string(forKey: "MyAppKey") ?? "{\"name\": \"John\", \"location\": \"Somewhere\",}"
+//    let fooDefault = UserDefaults(suiteName: "group.org.reactjs.native.example.RNWidgetTest")?.string(forKey: "MyAppKey") ?? "{\"name\": \"John\", \"location\": \"Somewhere\",}"
+    let fooDefault = UserDefaults(suiteName: "group.org.reactjs.native.example.RNWidgetTest")?.string(forKey: "MyAppKey") ?? "Default timeline"
     
     var entries: [SimpleEntry] = []
     
@@ -67,28 +68,30 @@ struct Provider: IntentTimelineProvider {
 //    } catch let error as NSError {
 //      print("Failed to load: \(error.localizedDescription)")
 //    }
-    if let data = fooDefault.data(using: String.Encoding.utf8) {
-      do {
-        if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-          // Use this dictionary
-          print(dictionary)
-          
-          var userName: String
-          var userLocation: String
-          
-          if let name = dictionary["name"] as? String {
-            userName = name
-          }
-          if let location = dictionary["location"] as? String {
-            userLocation = location
-          }
-          
-          entries.append(SimpleEntry(date: Date(), dataPoint: DataPoint(foo: userName, baz: userLocation, date: "date timeline"), start: "start timeline", end: "end timeline"))
-        }
-      } catch _ {
-        // Do nothing
-      }
-    }
+//    if let data = fooDefault.data(using: String.Encoding.utf8) {
+//      do {
+//        if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+//          // Use this dictionary
+//          print(dictionary)
+//
+//          var userName: String
+//          var userLocation: String
+//
+//          if let name = dictionary["name"] as? String {
+//            userName = name
+//          }
+//          if let location = dictionary["location"] as? String {
+//            userLocation = location
+//          }
+//
+//          entries.append(SimpleEntry(date: Date(), dataPoint: DataPoint(foo: userName, baz: userLocation, date: "date timeline"), start: "start timeline", end: "end timeline"))
+//        }
+//      } catch _ {
+//        // Do nothing
+//      }
+//    }
+    
+    let entry = SimpleEntry(date: Date(), dataPoint: DataPoint(foo: fooDefault, baz: "baz timeline", date: "date timeline"), start: "start timeline", end: "end timeline")
     
     // Create a timeline entry for "now."
     let date = Date()
@@ -100,9 +103,10 @@ struct Provider: IntentTimelineProvider {
     // Create the timeline with the entry and a reload policy with the date
     // for the next update.
     let timeline = Timeline(
-//      entries:[entry],
-      entries: entries,
-      policy: .after(nextUpdateDate)
+      entries:[entry],
+      policy: .atEnd
+//      entries: entries,
+//      policy: .after(nextUpdateDate)
     )
     
     // Call the completion to pass the timeline to WidgetKit.

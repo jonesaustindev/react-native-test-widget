@@ -19,10 +19,11 @@ import DefaultPreference from 'react-native-default-preference';
 
 const appGroupIdentifier = 'group.org.reactjs.native.example.RNWidgetTest';
 
-const data = {
-  name: 'Austin',
-  location: 'Birmingham',
-};
+// const data = {
+//   name: 'Austin',
+//   location: 'Birmingham',
+// };
+const data = 'Hi from React Native!';
 
 import {
   Header,
